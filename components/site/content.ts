@@ -21,9 +21,10 @@ export const profile = {
 export const about: string[] = [
     "I'm Arsh, a Computer Science student at the **University of Massachusetts Amherst**, in the **Manning College of Information and Computer Sciences**, carrying a **3.963/4.00** cumulative GPA.",
     "I build AI systems end to end. Most recently that meant **FinSight**, a React and FastAPI research platform indexing **17,986 SEC and BSE listing records**, with a local retrieval-augmented generation pipeline that answers questions from five retrieved evidence passages and cites every one of them.",
+    "**SignSprout** points the same instinct somewhere else: an ASL tutor covering the alphabet, numbers and 24 everyday signs across **71 lessons in 8 units**, reading your hand shape through the webcam with MediaPipe landmark tracking and dynamic time warping against reference sequences. Inference runs **entirely on-device**, so no video ever leaves the browser.",
     "This past summer I was an **AI Market Research Intern at Aadrila Technologies** in Mumbai, identifying U.S. GenAI growth opportunities through market sizing, competitive benchmarking and customer segmentation.",
     "Before university I spent two years as an **Event Management Supervisor at SHISTECH** in Gurugram, leading a 25+ member technical team and running operations for over 1,000 participants.",
-    "Right now I'm working through retrieval systems, computer vision and applied machine learning — and I'm looking for **Summer 2026 internships**.",
+    "Right now I'm working through retrieval systems, computer vision and applied machine learning.",
 ]
 
 export type Entry = {
