@@ -14,7 +14,7 @@ export const profile = {
     altEmail: "arsh07632@gmail.com",
     github: "https://github.com/uhrshh",
     linkedin: "https://www.linkedin.com/in/arsh127",
-    resume: "/arsh-resume.pdf",
+    resume: "/resume.pdf",
     // Phone is deliberately NOT published here — see README.
 }
 

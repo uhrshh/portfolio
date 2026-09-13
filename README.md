@@ -40,7 +40,7 @@ components/
     Reveal.tsx      scroll-into-view fade
     LazyMount.tsx   defers canvas/WebGL work until it's near the viewport
 public/
-  arsh-resume.pdf   linked from the hero and contact section
+  resume.pdf   linked from the hero and contact section
 ```
 
 ### Editing content
