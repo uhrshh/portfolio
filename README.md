@@ -181,7 +181,40 @@ them around, carry these along:
 
 ## Deploying
 
-Push to GitHub, import at <https://vercel.com/new>, accept the defaults. Next.js
-is zero-config there.
+The site is a fully static Next.js build, so Vercel needs no configuration.
+
+### 1. Push to GitHub
+
+```bash
+git remote add origin https://github.com/uhrshh/portfolio.git
+git push -u origin main
+```
+
+Create the empty repo at <https://github.com/new> first — no README, no
+.gitignore, or the push will be rejected as a non-fast-forward. When git asks
+for a password, it wants a **personal access token**
+(<https://github.com/settings/tokens>), not your account password.
+
+### 2. Import to Vercel
+
+<https://vercel.com/new> → sign in with GitHub → pick the repo → Deploy.
+Framework, build command and output directory are all detected. You get a URL
+like `arsh-portfolio.vercel.app`, and every later `git push` redeploys.
+
+`site.config.ts` falls back to Vercel's own production URL, so canonical links,
+the social card, robots.txt and sitemap.xml are all correct on that first
+deploy without setting anything.
+
+### 3. Attach a custom domain, whenever you get one
+
+1. Vercel → your project → **Settings → Domains** → add the domain.
+2. At your registrar, add the records Vercel shows you — usually an `A` record
+   for the apex (`@` → `76.76.21.21`) and a `CNAME` for `www` →
+   `cname.vercel-dns.com`. Vercel issues the HTTPS certificate itself.
+3. Vercel → **Settings → Environment Variables** → add
+   `NEXT_PUBLIC_SITE_URL` = `https://yourdomain.com` (no trailing slash),
+   then redeploy so the metadata picks it up.
+
+DNS usually propagates in minutes, occasionally up to a day.
 
 ---
