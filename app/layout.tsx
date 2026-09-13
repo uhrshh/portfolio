@@ -6,6 +6,8 @@ import "./globals.css"
 
 export const metadata: Metadata = {
     metadataBase: new URL(SITE),
+    // metadataBase alone does not emit <link rel="canonical">
+    alternates: { canonical: "/" },
     title: "Arsh — Computer Science @ UMass Amherst",
     description:
         "Arsh is a Computer Science student at UMass Amherst building AI systems that cite their sources — retrieval pipelines, computer vision and full-stack software.",
