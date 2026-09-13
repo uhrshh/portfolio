@@ -1,0 +1,839 @@
+/* ============================================================
+   Arsh — portfolio design system
+   ============================================================ */
+
+:root {
+    color-scheme: dark;
+
+    /* ---- surface (dark is the default) ---- */
+    --bg-rgb:        8, 9, 10;
+    --bg:            rgb(var(--bg-rgb));
+    --bg-raised:     #0E1012;
+    --ink:           #ECEDEF;
+    --ink-dim:       #9AA0A6;
+    --ink-faint:     #5E646B;
+    --rule:          rgba(255, 255, 255, 0.09);
+    --rule-strong:   rgba(255, 255, 255, 0.18);
+    --glow:          rgba(255, 255, 255, 0.04);
+
+    /* brand accents for the contact links */
+    --gh:            #B392F0;
+    --li:            #4DA3E8;
+
+    /* ---- type ---- */
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    /* fluid display scale */
+    --t-display: clamp(3rem, 11vw, 9.5rem);
+    --t-h2:      clamp(2rem, 5.2vw, 4.25rem);
+    --t-h3:      clamp(1.35rem, 2.5vw, 2.1rem);
+    --t-body:    clamp(0.95rem, 1.15vw, 1.0625rem);
+    --t-micro:   clamp(0.625rem, 0.78vw, 0.6875rem);
+
+    /* ---- layout ---- */
+    --gutter:    clamp(1.25rem, 5vw, 5.5rem);
+    --measure:   68ch;
+    --section-y: clamp(6rem, 14vh, 12rem);
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Light theme. Applied by the pre-paint script in app/layout.tsx and toggled
+   by the glass ring in the hero. */
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    --bg-rgb:        244, 244, 241;
+    --bg-raised:     #FFFFFF;
+    --ink:           #0B0C0E;
+    --ink-dim:       #52565C;
+    --ink-faint:     #83888F;
+    --rule:          rgba(0, 0, 0, 0.13);
+    --rule-strong:   rgba(0, 0, 0, 0.26);
+    --glow:          rgba(0, 0, 0, 0.035);
+
+    --gh:            #6F42C1;
+    --li:            #0A66C2;
+}
+
+* { box-sizing: border-box; }
+
+html {
+    background: var(--bg);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    transition: background-color 0.45s var(--ease), color 0.45s var(--ease);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--t-body);
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+::selection { background: var(--ink); color: var(--bg); }
+
+a { color: inherit; text-decoration: none; }
+
+img, canvas { max-width: 100%; }
+
+/* ---------- reusable atoms ---------- */
+
+.mono {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 500;
+}
+
+.shell {
+    width: 100%;
+    max-width: 1440px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+.rule { height: 1px; background: var(--rule); border: 0; margin: 0; }
+
+/* scroll reveal — driven by components/site/Reveal.tsx */
+.reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    will-change: opacity, transform;
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* ============================================================
+   header
+   ============================================================ */
+
+.site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.15rem var(--gutter);
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(var(--bg-rgb), 0.82), rgba(var(--bg-rgb), 0));
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+.site-header > * { pointer-events: auto; }
+
+.site-header__mark {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.site-nav { display: flex; gap: clamp(0.9rem, 2.2vw, 2rem); }
+
+.site-nav a {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    opacity: 0.5;
+    transition: opacity 0.3s var(--ease);
+}
+.site-nav a:hover,
+.site-nav a:focus-visible { opacity: 1; }
+
+@media (max-width: 640px) {
+    .site-nav__wide { display: none; }
+}
+
+/* ============================================================
+   hero
+   ============================================================ */
+
+.hero {
+    position: relative;
+    height: 100svh;
+    min-height: 34rem;
+    width: 100%;
+    overflow: hidden;
+    display: grid;
+    /* The text wall is intentionally wider than the viewport. Without an
+       explicit minmax(0, …) track the auto-sized grid column grows to fit it
+       and drags the overlay out past the screen edge with it. */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+}
+
+/* the kinetic name grid sits in the grid cell, everything else layers on top */
+.hero__grid { grid-area: 1 / 1; }
+
+/* the refracting glass ring that encircles the name and doubles as the
+   light/dark switch. pointer-events:none keeps the WebGL canvas from eating
+   clicks meant for the CTA buttons — the component tracks hover on `window`,
+   so its tilt still responds. */
+.hero__ring {
+    grid-area: 1 / 1;
+    pointer-events: none;
+    z-index: 1;
+}
+.hero__ring > div {
+    background: transparent !important;
+    touch-action: pan-y !important;
+}
+
+/* Hit-area for the theme switch: the whole disc enclosed by the ring. */
+.theme-toggle {
+    grid-area: 1 / 1;
+    z-index: 3;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.theme-toggle circle {
+    /* `all` makes the interior hit-testable too even though fill is none, so a
+       click anywhere inside the ring counts — not just on the ring itself. */
+    pointer-events: all;
+    cursor: pointer;
+    fill: none;
+    stroke: transparent;
+    transition: stroke 0.35s var(--ease);
+}
+
+/* No hover stroke. The hit area is the whole disc, so a hover style here would
+   paint a wide grey ring over the glass torus the moment the cursor entered the
+   middle of the hero. The hover affordance is the hint caption below instead. */
+
+/*
+ * Chrome paints its own blue focus ring on focusable SVG elements — dropped
+ * here in favour of the ring's own stroke.
+ *
+ * Keyed on :focus rather than :focus-visible on purpose. :focus-visible was not
+ * matching on this SVG element even under keyboard focus, which would have left
+ * keyboard users with no indicator at all. The circle's onMouseDown prevents
+ * default so pointer interaction never focuses it, which makes plain :focus
+ * effectively keyboard-only anyway.
+ */
+.theme-toggle circle:focus {
+    outline: none;
+    stroke: var(--rule-strong);
+}
+
+.theme-toggle__hint {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    fill: var(--ink-dim);
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+    pointer-events: none;
+}
+.theme-toggle:hover .theme-toggle__hint { opacity: 1; }
+
+/* holds the moving wall back so the headline can sit cleanly on top */
+.hero__vignette {
+    grid-area: 1 / 1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 40% 34% at 50% 50%,
+            rgba(var(--bg-rgb), 0.94) 0%,
+            rgba(var(--bg-rgb), 0.58) 55%,
+            rgba(var(--bg-rgb), 0) 100%),
+        linear-gradient(to bottom,
+            var(--bg) 0%,
+            rgba(var(--bg-rgb), 0.18) 16%,
+            rgba(var(--bg-rgb), 0.18) 56%,
+            rgba(var(--bg-rgb), 0.96) 88%,
+            var(--bg) 100%);
+}
+
+.hero__overlay {
+    grid-area: 1 / 1;
+    /* above the theme-toggle disc, so the CTA row always wins a click even if
+       a short viewport makes the ring large enough to overlap it */
+    z-index: 4;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 var(--gutter) clamp(1.75rem, 5vh, 3.25rem);
+    pointer-events: none;
+}
+.hero__overlay > * { pointer-events: auto; }
+
+.hero__title {
+    /* Pinned to the exact centre of the hero — the same point the text wall
+       resolves to — so the crisp name eclipses the grid's centre word instead
+       of leaving it orphaned beside it.
+       Sized to the word rather than the whole hero, so it neither blocks the
+       CTA buttons below nor the ring's left/right extremes, and the name
+       itself stays selectable. */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: max-content;
+    max-width: 100%;
+    margin: 0;
+    /* deliberately below the toggle disc (z-index 3) so clicking the name
+       toggles the theme, per the ring's whole-disc hit area */
+    pointer-events: none;
+    font-size: var(--t-display);
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    line-height: 0.84;
+    text-align: center;
+    text-transform: uppercase;
+    /* stacked shadows punch a soft dark hole in the moving wall behind,
+       so the headline always reads no matter what the grid is doing */
+    text-shadow:
+        0 0 110px rgba(var(--bg-rgb), 1),
+        0 0 70px rgba(var(--bg-rgb), 1),
+        0 0 40px rgba(var(--bg-rgb), 0.98),
+        0 0 16px rgba(var(--bg-rgb), 0.9);
+}
+
+.hero__rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 0 0 clamp(1.1rem, 2.4vh, 1.8rem);
+    border: 0;
+    width: 100%;
+}
+
+.hero__foot {
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.hero__cta {
+    pointer-events: auto;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.hero__scroll {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.hero__scroll-line {
+    display: block;
+    width: 3.25rem;
+    height: 1px;
+    background: var(--rule-strong);
+    position: relative;
+    overflow: hidden;
+}
+.hero__scroll-line::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background: var(--ink);
+    animation: scroll-sweep 2.4s var(--ease) infinite;
+}
+
+/* below this width the two glass buttons plus the scroll cue overflow the
+   viewport, so the foot stacks and the cue drops away */
+@media (max-width: 720px) {
+    .hero__foot {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    .hero__scroll { display: none; }
+}
+
+@keyframes scroll-sweep {
+    0%   { transform: translateX(-100%); }
+    60%  { transform: translateX(250%); }
+    100% { transform: translateX(250%); }
+}
+
+/* ============================================================
+   sections
+   ============================================================ */
+
+.section { padding-block: var(--section-y); position: relative; }
+
+/* keep section headings clear of the fixed header when jumped to via anchor */
+.section,
+.contact { scroll-margin-top: 4.5rem; }
+
+.section__head {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.section__num {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+}
+
+.section__title {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ============================================================
+   about
+   ============================================================ */
+
+.about__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: center;
+}
+
+@media (max-width: 900px) {
+    .about__layout { grid-template-columns: 1fr; }
+}
+
+.about__body p {
+    margin: 0 0 1.15em;
+    max-width: var(--measure);
+    color: var(--ink-dim);
+    font-size: clamp(1rem, 1.35vw, 1.15rem);
+    line-height: 1.72;
+}
+.about__body p:last-child { margin-bottom: 0; }
+
+.about__body strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.about__globe {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+}
+
+/* GlobeStudy hard-codes min-width:1200/min-height:800 on its root —
+   these overrides are also passed inline; kept here as a safety net. */
+.about__globe > div {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: transparent !important;
+}
+
+/* ============================================================
+   experience + education (shared row treatment)
+   ============================================================ */
+
+.entry {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem 2rem;
+    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+    border-top: 1px solid var(--rule);
+    transition: border-color 0.4s var(--ease);
+}
+.entry:last-child { border-bottom: 1px solid var(--rule); }
+.entry:hover { border-top-color: var(--rule-strong); }
+
+.entry__title {
+    font-size: var(--t-h3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0;
+    color: var(--ink);
+}
+
+.entry__org {
+    color: var(--ink-faint);
+    font-weight: 400;
+}
+
+.entry__when {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    white-space: nowrap;
+}
+
+.entry__points {
+    grid-column: 1 / -1;
+    margin: 1.15rem 0 0;
+    padding: 0;
+    list-style: none;
+    max-width: var(--measure);
+    display: grid;
+    gap: 0.7rem;
+}
+
+.entry__points li {
+    position: relative;
+    padding-left: 1.4rem;
+    color: var(--ink-dim);
+    line-height: 1.65;
+}
+
+.entry__points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--ink-faint);
+}
+
+@media (max-width: 720px) {
+    .entry { grid-template-columns: 1fr; }
+    .entry__when { text-align: left; flex-direction: row; gap: 0.75rem; flex-wrap: wrap; }
+}
+
+/* ============================================================
+   marquee
+   ============================================================ */
+
+.marquee {
+    --marquee-duration: 46s;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    border-block: 1px solid var(--rule);
+    padding-block: 1.05rem;
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+.marquee__track {
+    display: flex;
+    flex-shrink: 0;
+    gap: clamp(1.75rem, 4vw, 3.25rem);
+    padding-right: clamp(1.75rem, 4vw, 3.25rem);
+    min-width: 100%;
+    animation: marquee var(--marquee-duration) linear infinite;
+}
+
+.marquee:hover .marquee__track { animation-play-state: paused; }
+
+.marquee__item {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    white-space: nowrap;
+    transition: color 0.3s var(--ease);
+}
+.marquee__item:hover { color: var(--ink); }
+
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-100%); }
+}
+
+/* ============================================================
+   selected work
+   ============================================================ */
+
+.work { border-top: 1px solid var(--rule); }
+
+.work__item {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: 1rem clamp(1.5rem, 4vw, 3.5rem);
+    padding-block: clamp(2rem, 4.5vw, 3.5rem);
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    transition: background 0.5s var(--ease);
+}
+
+.work__item::before {
+    content: "";
+    position: absolute;
+    inset: 0 calc(var(--gutter) * -0.4);
+    background: var(--glow);
+    opacity: 0;
+    transition: opacity 0.5s var(--ease);
+    pointer-events: none;
+}
+.work__item:hover::before { opacity: 1; }
+
+.work__index {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    padding-top: 0.55rem;
+}
+
+.work__headline { min-width: 0; }
+
+.work__name {
+    font-size: var(--t-h3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35rem;
+    line-height: 1.2;
+}
+
+.work__kicker {
+    color: var(--ink-faint);
+    font-size: 0.95em;
+    margin: 0;
+}
+
+.work__body { min-width: 0; }
+
+.work__desc {
+    margin: 0 0 1.35rem;
+    color: var(--ink-dim);
+    max-width: 56ch;
+}
+
+.work__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.work__tags li {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    transition: border-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+.work__item:hover .work__tags li { border-color: var(--rule-strong); color: var(--ink-dim); }
+
+.work__stat {
+    display: flex;
+    gap: 1.75rem;
+    margin: 0 0 1.35rem;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.work__stat div { display: grid; gap: 0.15rem; }
+
+.work__stat dt {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.work__stat dd {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+    .work__item { grid-template-columns: 2.5rem minmax(0, 1fr); }
+    .work__body { grid-column: 2 / -1; }
+}
+
+.work__tags li:has(.tag-link) { padding: 0; }
+
+.tag-link {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    color: inherit;
+    transition: color 0.3s var(--ease);
+}
+.work__tags li:has(.tag-link:hover) { border-color: var(--rule-strong); }
+.tag-link:hover { color: var(--ink); }
+
+.work__links {
+    display: flex;
+    gap: 1.25rem;
+    margin-top: 1.15rem;
+    flex-wrap: wrap;
+}
+
+.work__links a {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    position: relative;
+    padding-bottom: 0.2rem;
+    transition: color 0.3s var(--ease);
+}
+.work__links a::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease);
+}
+.work__links a:hover { color: var(--ink); }
+.work__links a:hover::after { transform: scaleX(1); }
+
+/* ============================================================
+   contact
+   ============================================================ */
+
+.contact {
+    position: relative;
+    border-top: 1px solid var(--rule);
+    padding-block: var(--section-y);
+}
+
+.contact__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.25rem, 6vw, 3.75rem);
+}
+
+.contact__mail {
+    font-size: clamp(1.75rem, 6.2vw, 5rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    display: inline-block;
+    margin: 0;
+    word-break: break-word;
+    transition: opacity 0.35s var(--ease);
+}
+.contact__mail:hover { opacity: 0.62; }
+
+.contact__lede {
+    color: var(--ink-dim);
+    max-width: 46ch;
+    margin: 0 0 clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.contact__links {
+    display: flex;
+    gap: clamp(1rem, 3vw, 2.25rem);
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.contact__links a {
+    font-family: var(--mono);
+    font-size: var(--t-micro);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    position: relative;
+    padding-bottom: 0.2rem;
+    transition: color 0.3s var(--ease);
+}
+
+.contact__links a::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease);
+}
+.contact__links a:hover { color: var(--ink); }
+.contact__links a:hover::after { transform: scaleX(1); }
+
+/* GitHub purple, LinkedIn blue — both tuned per theme */
+.contact__links a.is-github { color: var(--gh); }
+.contact__links a.is-linkedin { color: var(--li); }
+.contact__links a.is-github:hover,
+.contact__links a.is-linkedin:hover { filter: brightness(1.25); }
+
+/* ============================================================
+   footer
+   ============================================================ */
+
+.site-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 1.6rem;
+    border-top: 1px solid var(--rule);
+}
+
+/* keyboard accessibility */
+:focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: 3px;
+}
+
+/* visually hidden but available to assistive tech */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}

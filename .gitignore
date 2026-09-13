@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+.vercel
+
+# local editor / dev-server config (hardcodes this machine's node path)
+.claude/
