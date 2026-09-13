@@ -116,7 +116,7 @@ export const work: Project[] = [
     {
         name: "SignSprout",
         kicker: "Hand-tracking sign language tutor",
-        year: "2025",
+        year: "2026",
         desc:
             "An interactive ASL learning application of 71 lessons across 8 units, pairing webcam computer vision with demonstrations, quizzes and progress tracking. Real-time gesture recognition covers 26 letters, 10 numbers and 24 vocabulary signs using MediaPipe landmark tracking and custom pose-and-motion matching — with two-hand recovery and tracking-gap handling, running entirely on-device so no video ever leaves the browser.",
         stats: [
