@@ -15,9 +15,8 @@ export default function Contact() {
                 <div>
                     <Reveal>
                         <p className="contact__lede">
-                            I&rsquo;m looking for Summer 2026 internships in AI and software
-                            engineering. If you&rsquo;re building something that has to be
-                            right, I&rsquo;d like to hear about it.
+                            If you&rsquo;re building something that has to be right,
+                            I&rsquo;d like to hear about it.
                         </p>
                     </Reveal>
 
