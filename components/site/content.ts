@@ -71,6 +71,7 @@ export const education: Entry[] = [
     {
         title: "B.S. Computer Science",
         org: "University of Massachusetts Amherst",
+        url: "https://www.umass.edu",
         start: "Sep 2025",
         end: "Present",
         place: "Amherst, MA",
@@ -82,6 +83,7 @@ export const education: Entry[] = [
     {
         title: "Indian School Certificate (ISC)",
         org: "Scottish High International School",
+        url: "https://www.scottishigh.com",
         start: "Graduated",
         end: "May 2025",
         place: "Gurugram, India",
