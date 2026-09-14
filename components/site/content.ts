@@ -164,8 +164,8 @@ export const certifications = [
 
 export const nav = [
     { label: "About", href: "#about" },
+    { label: "Education", href: "#education" },
     { label: "Experience", href: "#experience" },
     { label: "Work", href: "#work" },
-    { label: "Education", href: "#education" },
     { label: "Contact", href: "#contact" },
 ]

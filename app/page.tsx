@@ -14,9 +14,9 @@ export default function Page() {
             <main>
                 <Hero />
                 <About />
+                <Education />
                 <Experience />
                 <Work />
-                <Education />
                 <Contact />
             </main>
             <SiteFooter />

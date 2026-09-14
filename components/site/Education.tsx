@@ -6,7 +6,7 @@ import { certifications, education } from "./content"
 export default function Education() {
     return (
         <section className="section shell" id="education">
-            <SectionHead num="04" title="Education" />
+            <SectionHead num="02" title="Education" />
             <EntryList entries={education} />
 
             <Reveal delay={0.1}>

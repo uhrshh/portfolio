@@ -7,7 +7,7 @@ export default function Experience() {
     return (
         <>
             <section className="section shell" id="experience">
-                <SectionHead num="02" title="Experience" />
+                <SectionHead num="03" title="Experience" />
                 <EntryList entries={experience} />
             </section>
 

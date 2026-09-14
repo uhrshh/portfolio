@@ -5,7 +5,7 @@ import { work } from "./content"
 export default function Work() {
     return (
         <section className="section shell" id="work">
-            <SectionHead num="03" title="Selected Work" />
+            <SectionHead num="04" title="Selected Work" />
 
             <div className="work">
                 {work.map((p, i) => (
