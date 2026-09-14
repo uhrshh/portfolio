@@ -9,7 +9,19 @@ export default function EntryList({ entries }: { entries: Entry[] }) {
                     <article className="entry">
                         <h3 className="entry__title">
                             {e.title}
-                            <span className="entry__org"> — {e.org}</span>
+                            <span className="entry__org">
+                                {" — "}
+                                {e.url ? (
+                                    <a href={e.url} target="_blank" rel="noopener noreferrer">
+                                        {e.org}
+                                        <span className="entry__ext" aria-hidden="true">
+                                            ↗
+                                        </span>
+                                    </a>
+                                ) : (
+                                    e.org
+                                )}
+                            </span>
                         </h3>
 
                         <div className="entry__when mono">

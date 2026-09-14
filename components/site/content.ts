@@ -30,6 +30,8 @@ export const about: string[] = [
 export type Entry = {
     title: string
     org: string
+    /** organisation website; when set, the org name becomes a link */
+    url?: string
     start: string
     end: string
     place: string
@@ -40,6 +42,7 @@ export const experience: Entry[] = [
     {
         title: "AI Market Research Intern",
         org: "Aadrila Technologies",
+        url: "https://aadrila.com",
         start: "Jun 2025",
         end: "Aug 2025",
         place: "Mumbai, India",
@@ -52,6 +55,7 @@ export const experience: Entry[] = [
     {
         title: "Event Management Supervisor",
         org: "SHISTECH",
+        url: "https://www.shistech.com",
         start: "Jun 2023",
         end: "May 2025",
         place: "Gurugram, India",
